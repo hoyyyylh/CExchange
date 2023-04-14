@@ -1,0 +1,25 @@
+{% extends "master.html" %}
+
+{% block content %}
+<H1>Make Your Exchange Request</H1>
+<form action="make_exchange/" method="post">
+    {% csrf_token %}
+    <label for="cur">Currency:</label>
+    <select id="cur" name="cur">
+        <option value="BTC">BTC</option>
+        <option value="LTC">LTC</option>
+        <option value="DASH">DASH</option>
+        <option value="DOGE">DOGE</option>
+    </select><br><br>
+    <label for="side">Buy or Sell:</label>
+    <select id="side" name="side">
+        <option value="BUY">Buy</option>
+        <option value="SELL">Sell</option>
+    </select><br><br>
+    <label for="amount">How Many Coin?</label>
+    <input name="amount" id="amount" placeholder="Amount"/><br><br>
+    <label for="price">For How Much?</label>
+    <input name="price" id="price" placeholder="Price"/><br><br>
+    <input type="submit" id="submit" value="Submit" style="background-color: aqua;"/>
+</form>
+{% endblock %}

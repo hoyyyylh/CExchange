@@ -1,0 +1,21 @@
+{% extends "master.html" %}
+
+{% block content %}
+<H1>Are You Sure?</H1>
+<table>
+    <tr>
+        <td>Currency</td>
+        <td>Side</td>
+        <td>Amount</td>
+        <td>Price</td>
+    </tr>
+    <tr>
+        <td>{{ ex.currency }}</td>
+        <td>{{ ex.side }}</td>
+        <td>{{ ex.amount }}</td>
+        <td>{{ ex.price }}</td>
+    </tr>
+</table>
+<br>
+<a href="deal/{{ ex.id }}">Deal!!!</a>
+{% endblock %}

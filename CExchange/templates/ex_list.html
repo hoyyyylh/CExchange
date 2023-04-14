@@ -1,0 +1,23 @@
+{% extends "master.html" %}
+
+{% block content %}
+<H1>Exchange List</H1>
+<table>
+    <tr>
+        <td>Currency</td>
+        <td>Side</td>
+        <td>Amount</td>
+        <td>Price</td>
+        <td>Deal</td>
+    </tr>
+    {% for x in finalexlist reversed %}
+    <tr>
+        <td>{{ x.currency }}</td>
+        <td>{{ x.side }}</td>
+        <td>{{ x.amount }}</td>
+        <td>{{ x.price }}</td>
+        <td><a href="confirm/{{ x.id }}">Deal</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

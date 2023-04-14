@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+{% block content %}
+<script src="https://js.braintreegateway.com/web/dropin/1.36.1/js/dropin.min.js"></script>
+
+<h1>Show Me the Money</h1>
+
+<form id="payment-form" action="payment/" method="post">
+    {% csrf_token %}
+    <input name="amount" id="amount" placeholder="Amount"/><br>
+    <div id="braintree-dropin"></div>
+    <input type="submit" id="submit" value="Submit" style="background-color: aqua;"/>
+    <input type="hidden" id="nonce" name="payment_method_nonce"/>
+</form>
+
+<script type="text/javascript">
+    const form = document.getElementById('payment-form');
+    var braintree_client_token = "{{ braintree_client_token }}";
+
+    braintree.dropin.create({
+        authorization: braintree_client_token,
+        container: document.getElementById('braintree-dropin'),
+        card: {
+            cardholderName: {
+                required: false
+            }
+        }
+    }, function (createErr, instance) {
+        form.addEventListener('submit', event => {
+            instance.requestPaymentMethod((error, payload) => {
+                document.getElementById('nonce').value = payload.nonce;
+                form.submit();
+            });
+        })
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "master.html" %}
+
+{% block content %}
+<H1>My Exchange</H1>
+<table>
+    <tr>
+        <td>Currency</td>
+        <td>Side</td>
+        <td>Amount</td>
+        <td>Price</td>
+        <td>Finish</td>
+    </tr>
+    {% for x in myexchange reversed %}
+    <tr>
+        <td>{{ x.currency }}</td>
+        <td>{{ x.side }}</td>
+        <td>{{ x.amount }}</td>
+        <td>{{ x.price }}</td>
+        <td>{{ x.done }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

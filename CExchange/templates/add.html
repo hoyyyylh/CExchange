@@ -1,0 +1,19 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Sign Up</h1>
+
+<form action="addrecord/" method="post">
+    {% csrf_token %}
+    <p>Username:</p>
+    <input name="username">
+    <br>
+    <p>Password:</p>
+    <input type="password" name="password">
+    <br>
+    <p>Email:</p>
+    <input type="email" name="email">
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+{% endblock %}
