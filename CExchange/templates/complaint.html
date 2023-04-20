@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block content %}
+<h1>Opinion or Complaint</h1>
+
+<p>Only the operator can see the message</p>
+<p>Every complaint will be handled independently</p>
+<p>Get back to you ASAP</p>
+
+<form action="addcomplaint/" method="post">
+    {% csrf_token %}
+    <textarea id="complaint" name="complaint" rows="5" cols="50" placeholder="leave your message here"></textarea><br>
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

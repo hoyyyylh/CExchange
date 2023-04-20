@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
 from .script import CreateAC, RefreshWallet, deal_confirm, getprice, gentoken, gentrans
-from .models import Wallet, Exchange
+from .models import Wallet, Exchange, Deposit, Complaint
 
 # Create your views here.
 def index(request):
@@ -29,8 +29,8 @@ def addrecord(request):
     CreateAC(user)
     return HttpResponseRedirect(reverse('index'))
 
-def fatality(request):
-    template = loader.get_template('fatality.html')
+def information(request):
+    template = loader.get_template('information.html')
     return HttpResponse(template.render({}, request))
 
 @login_required
@@ -40,7 +40,7 @@ def profile(request):
     mybal = []
     for wallet in mywallet:
         if wallet.currency != "HKD":
-            RefreshWallet(wallet)
+            #RefreshWallet(wallet)
             word = str(wallet.currency) + ": " + str(wallet.balance)
             mybal.append(word)
         else:
@@ -74,7 +74,9 @@ def payment(request):
         amount = float(amount)
         mywallet.balance += amount
         mywallet.save()
-        return HttpResponseRedirect(reverse('profile'))
+        newcharge = Deposit(owner=request.user, amount=amount)
+        newcharge.save()
+        return HttpResponseRedirect(reverse('success'))
     else:
         return HttpResponseRedirect(reverse('fatality'))
 
@@ -98,8 +100,10 @@ def make_exchange(request):
 def my_ex(request):
     template = loader.get_template('my_ex.html')
     myexchange = Exchange.objects.filter(owner=request.user).values()
+    mydeposit = Deposit.objects.filter(owner=request.user).values()
     context = {
         'myexchange': myexchange,
+        'mydeposit': mydeposit
     }
     return HttpResponse(template.render(context,request))
 
@@ -145,6 +149,39 @@ def deal(request, id):
     user = request.user
     result = deal_confirm(id, user)
     if result == True:
-        return HttpResponseRedirect(reverse('profile'))
+        return HttpResponseRedirect(reverse('success'))
     else:
         return HttpResponseRedirect(reverse('fatality'))
+    
+@login_required
+def complaint(request):
+    template = loader.get_template('complaint.html')
+    return HttpResponse(template.render({}, request))
+
+@login_required
+def addcomplaint(request):
+    x = request.POST['complaint']
+    user = request.user
+    newcomplaint = Complaint(owner=user, messages=x)
+    newcomplaint.save()
+    return HttpResponseRedirect(reverse('success'))
+    
+def success(request):
+    template = loader.get_template('success.html')
+    return HttpResponse(template.render({}, request))
+
+def fatality(request):
+    template = loader.get_template('fatality.html')
+    return HttpResponse(template.render({}, request))
+
+@login_required
+def complaintlist(request):
+    if request.user.is_superuser:
+        template = loader.get_template('complaintlist.html')
+        complaint = Complaint.objects.all().values()
+        context = {
+            'complaint': complaint
+        }
+        return HttpResponse(template.render(context,request))
+    else:
+        return HttpResponseRedirect(reverse('index'))

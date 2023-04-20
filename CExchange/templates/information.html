@@ -1,0 +1,90 @@
+{% extends "master.html" %}
+
+{% block content %}
+
+{% load static %}
+<script src="{% static 'info.js' %}"></script>
+
+<H1>Information</H1>
+<form name="infoform" onchange="changecontent()">
+    <input type="radio" id="platform" name="info" value="platform">
+    <label for="platform">Our Platform</label>
+    <input type="radio" id="Bitcoin" name="info" value="Bitcoin">
+    <label for="Bitcoin">Bitcoin</label>
+    <input type="radio" id="Litecoin" name="info" value="Litecoin">
+    <label for="Litecoin">Litecoin</label>
+    <input type="radio" id="Dash" name="info" value="Dash">
+    <label for="Dash">Dash</label>
+    <input type="radio" id="Dogecoin" name="info" value="Dogecoin">
+    <label for="Dogecoin">Dogecoin</label>
+</form><br>
+
+<div id="content"></div>
+
+<div><a id="web" href="" target="_blank"></a></div>
+
+<div id="BitcoinText" style="display: none;">
+    <pre>
+        Bitcoin is a protocol which implements a highly available, public, permanent, and decentralized ledger. In order to add to the ledger, a user must prove they control an entry in the ledger. The protocol specifies that the entry indicates an amount of a token, bitcoin with a minuscule b. The user can update the ledger, assigning some of their bitcoin to another entry in the ledger. Because the token has characteristics of money, it can be thought of as a digital currency.
+
+        Bitcoin transactions are verified by network nodes through cryptography and recorded in a public distributed ledger called a blockchain. The cryptocurrency was invented in 2008 by an unknown person or group of people using the name Satoshi Nakamoto. The currency began use in 2009, when its implementation was released as open-source software. The word "bitcoin" was defined in a white paper published on October 31, 2008. It is a compound of the words bit and coin.
+
+        The Library of Congress reports that, as of November 2021, nine countries have fully banned bitcoin use, and a further forty-two have implicitly banned it. A few governments have used bitcoin in some capacity. El Salvador has adopted Bitcoin as legal tender, although use by merchants remains low. Ukraine has accepted cryptocurrency donations to fund the resistance to the 2022 Russian invasion. Iran has used bitcoin to bypass sanctions.
+
+        Bitcoin has been described as an economic bubble by at least eight recipients of the Nobel Memorial Prize in Economic Sciences.
+
+        The environmental effects of bitcoin are substantial. Its proof-of-work algorithm for bitcoin mining is designed to be computationally difficult, which requires the consumption of increasing quantities of electricity, the generation of which has contributed to climate change. According to the University of Cambridge, bitcoin has emitted an estimated 200 million tonnes of carbon dioxide since its launch, or about 0.04% of all carbon dioxide released since 2009. \n
+    </pre>
+</div>
+
+<div id="LitecoinText" style="display: none;">
+    <pre>
+        Litecoin is a decentralized peer-to-peer cryptocurrency and open-source software project released under the MIT/X11 license. Inspired by Bitcoin, Litecoin was among the earliest altcoins, starting in October 2011. In technical details, the Litecoin main chain shares a slightly modified Bitcoin codebase. The practical effects of those codebase differences are lower transaction fees, faster transaction confirmations, and faster mining difficulty retargeting. Due to its underlying similarities to Bitcoin, Litecoin has historically been referred to as the "silver to Bitcoin's gold." In 2022, Litecoin added optional privacy features via soft fork through the MWEB (MimbleWimble extension block) upgrade.
+
+        By 2011, Bitcoin mining was largely performed by GPUs. This raised concern in some users that mining now had a high barrier to entry, and that CPU resources were becoming obsolete and worthless for mining. Using code from Bitcoin, a new alternative currency was created called Tenebrix (TBX). Tenebrix replaced the SHA-256 rounds in Bitcoin's mining algorithm with the scrypt function, which had been specifically designed in 2009 to be expensive to accelerate with FPGA or ASIC chips. This would allow Tenebrix to have been "GPU-resistant", and utilize the available CPU resources from bitcoin miners. Tenebrix itself was a successor project to an earlier cryptocurrency which replaced Bitcoin's issuance schedule with a constant block reward (thus creating an unlimited money supply). However, the developers included a clause in the code that would allow them to claim 7.7 million TBX for themselves at no cost, which was criticized by users.
+
+        Lee released Litecoin via an open-source client on GitHub on October 7, 2011. The Litecoin network went live on October 13, 2011. Litecoin was a source code fork of the Bitcoin Core client, originally differing by having a decreased block generation time (2.5 minutes), increased maximum number of coins, different hashing algorithm (scrypt, instead of SHA-256), faster difficulty retarget, and a slightly modified GUI.
+    </pre>
+</div>
+
+<div id="DashText" style="display: none;">
+    <pre>
+        Dash is an open source cryptocurrency. It is an altcoin that was forked from the Bitcoin protocol. It is also a decentralized autonomous organization (DAO) run by a subset of its users, which are called "masternodes".
+
+        The currency was launched in January 2014 as "Xcoin" by Evan Duffield, as a fork of the Bitcoin protocol. It is an altcoin and in its early days it was subject to pump and dump speculation. It was rebranded as Darkcoin, which received press for being used in dark net markets. In March 2015, it rebranded again with the name Dash as a portmanteau of 'digital cash'. As of August 2016, Dash is no longer used in any major dark net markets worth noting.
+
+        In early 2017 Duffield, who lived in the Phoenix area, and some other people working on Dash took space in a business incubator at Arizona State University. The Dash DAO later funded a blockchain research lab at ASU. As of April 2018, Dash's market capitalization was around $4.3 billion and it was one of the top 12 cryptocurrencies. As of February 2019, Dash was the most popular cryptocurrency in Venezuela according to Der Spiegel. In October 2022 Dash had a valued market capitalisation of 450 million USD.
+
+        Dash, like Bitcoin, has a block reward. The block reward in the case of Bitcoin has halved, but in the case of Dash, the block reward only decreases by 7.14% every 210240 blocks. The block time of Dash is 2.5 minutes, which means that on average, a decrease occurs every 365 days. The current block reward is 2.68 Dash + transaction fees. The block reward after the reduction will be 2.49 Dash + transaction fees.
+    </pre>
+</div>
+
+<div id="DogecoinText" style="display: none;">
+    <pre>
+        Dogecoin is a cryptocurrency created by software engineers Billy Markus and Jackson Palmer, who decided to create a payment system as a "joke", making fun of the wild speculation in cryptocurrencies at the time. It is considered both the first "meme coin", and more specifically the first "dog coin". Despite its satirical nature, some consider it a legitimate investment prospect. Dogecoin features the face of the Shiba Inu dog from the "doge" meme as its logo and namesake. It was introduced on December 6, 2013, and quickly developed its own online community, reaching a peak market capitalization of over $85 billion on May 5, 2021. As of 2021, it is the sleeve sponsor of Watford Football Club.
+
+        Originally formed as a "joke", Dogecoin was created by IBM software engineer Billy Markus and Adobe software engineer Jackson Palmer. They wanted to create a peer-to-peer digital currency that could reach a broader demographic than Bitcoin. In addition, they wanted to distance it from the controversial history of other coins. Dogecoin was officially launched on December 6, 2013, and within the first 30 days, there were over a million visitors to Dogecoin.com.
+
+        Palmer is credited with making the idea a reality. At the time, he was a member of the Adobe Systems marketing department in Sydney. Palmer had purchased the domain Dogecoin.com and added a splash screen, which featured the coin's logo and scattered Comic Sans text. Markus reached out to Palmer after seeing the site, and started efforts to develop the currency. Markus had designed Dogecoin's protocol based on existing cryptocurrencies Luckycoin and Litecoin, which use scrypt technology in their proof-of-work algorithm. The use of scrypt means that miners cannot use SHA-256 bitcoin mining equipment, and instead must use dedicated FPGA and ASIC devices for mining which are known to be more complex to produce.
+    </pre>
+</div>
+
+<div id="platformText" style="display: none;">
+    <pre>
+        About Us:
+
+        This centralized cryptocurrency exchange platform has been built with utmost attention to the requirements set forth by the Securities and Futures Commission (SFC) of Hong Kong. It must be licensed and regulated by SFC and respond to all the enquiries and cooperate with the investigation raised by the related authorities. This platform closely observes the regulatory requirements indicated in the SFC’s published consultation paper on the regulatory requirements for virtual asset trading platform operators. 
+
+        Virtual asset is a very risky investment. Some virtual assets may not be defined as “property” under the law, so the transaction may not be covered by the protection of the Investor Compensation Fund. They are not back by the government or any authority, the value of it to exchange for fiat money is totally decided by the willingness of the market, so there is a potential risk of total lost. The use of the cryptocurrency is highly susceptible to the change of the regulation, legality and technology.
+
+        Our platform established a control system to find out any market manipulating and abusive trading activity. Any abnormal phenomenon like price spikes or abusive trading will be spotted. Once there is a report, the system allows us to trace down all the clients involved in the activity. All the clients and the transfer request will be suspended until further investigation. Any client violates the rules will be banned forever. A full report will be sent to the SFC after the investigation. 
+
+        Our platform will keep all the order instructions requested by the clients and all the account information. Since we do not accept any telephone order, there will be no telephone record.
+
+        All the record will be kept both electronically and back up physically. To ensure that all the financial position, profit or loss, balance sheets of the account, movement of the assets can be traced. These records will be used in auditing. 
+
+        Any further request, please contact us via the complaint page
+    </pre>
+</div>
+
+{% endblock %}

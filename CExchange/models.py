@@ -15,6 +15,7 @@ class Wallet(models.Model):
 
 class Exchange(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    init_date = models.DateTimeField(auto_now_add=True)
     currency = models.CharField(max_length=4, default="BTC", choices=CURRENCY)
     side = models.CharField(max_length=4, choices=SIDE)
     amount = models.FloatField(default=0)
@@ -22,3 +23,14 @@ class Exchange(models.Model):
     done = models.BooleanField(default=False)
     dead = models.BooleanField(default=False)
     taken_by = models.CharField(max_length=255, null=True)
+    deal_date = models.DateTimeField(blank=True, null=True)
+
+class Deposit(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0)
+    date = models.DateTimeField(auto_now_add=True)
+
+class Complaint(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    messages = models.TextField(default="Just to Say Hi")
+    date = models.DateTimeField(auto_now_add=True)

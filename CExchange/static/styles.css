@@ -1,3 +1,7 @@
+body {
+    background-color: black;
+}
+
 ul {
     list-style-type: none;
     overflow: hidden;
@@ -31,18 +35,24 @@ h1 {
 }
 
 p {
-    color:navy;
+    color:aqua;
 }
 
 label {
-    color: navy;
-}
-
-tr {
-    border: 2px solid teal;
+    color:aqua;
 }
 
 td {
-    color: navy;
+    color:aquamarine;
     padding: 5px;
+}
+
+pre {
+    color: aqua;
+    width: 100%;
+    white-space:break-spaces ;
+}
+
+a {
+    color: chartreuse;
 }

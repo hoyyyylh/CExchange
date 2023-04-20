@@ -141,24 +141,37 @@ exchange.set_sandbox_mode(True)
 
 def getprice():
     price=[]
-    word = "BTC: "
+    word2 = "Trading Volume: "
+    word = "BTC:HKD "
     ex = exchange.fetch_ticker('BTC/USD')['average']
     hkdp = float(ex)*7.85
     final = word + str(hkdp)
     price.append(final)
-    word = "LTC: "
+    tv = exchange.fetch_ticker('BTC/USD')['baseVolume']
+    final = word2 + str(tv)
+    price.append(final)
+    word = "LTC:HKD "
     ex = exchange.fetch_ticker('LTC/USD')['average']
     hkdp = float(ex)*7.85
     final = word + str(hkdp)
     price.append(final)
-    word = "DASH: "
+    tv = exchange.fetch_ticker('LTC/USD')['baseVolume']
+    final = word2 + str(tv)
+    price.append(final)
+    word = "DASH:HKD "
     ex = ex = exchange.fetch_ticker('DASH/USDT')['average']
     hkdp = float(ex)*7.85
     final = word + str(hkdp)
     price.append(final)
-    word = "DOGE: "
+    tv = exchange.fetch_ticker('DASH/USDT')['baseVolume']
+    final = word2 + str(tv)
+    price.append(final)
+    word = "DOGE:HKD "
     ex = exchange.fetch_ticker('DOGE/USD')['average']
     hkdp = float(ex)*7.85
     final = word + str(hkdp)
+    price.append(final)
+    tv = exchange.fetch_ticker('DOGE/USD')['baseVolume']
+    final = word2 + str(tv)
     price.append(final)
     return price

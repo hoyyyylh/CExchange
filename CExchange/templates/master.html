@@ -21,11 +21,15 @@
     <br><br>
     <ul>
         <li><a href="{% url 'index' %}">Home</a></li>
-        <li><a href="{% url 'profile' %}">Profile</a></li>
-        <li><a href="{% url 'checkout' %}">Charge</a></li>
-        <li><a href="{% url 'make_ex' %}">Make Exchange</a></li>
-        <li><a href="{% url 'my_ex' %}">My Exchange</a></li>
-        <li><a href="{% url 'ex_list' %}">Exchange List</a></li>
+        <li><a href="{% url 'information' %}">Information</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'checkout' %}">Charge</a></li>
+            <li><a href="{% url 'make_ex' %}">Make Exchange</a></li>
+            <li><a href="{% url 'my_ex' %}">My History</a></li>
+            <li><a href="{% url 'ex_list' %}">Exchange List</a></li>
+            <li><a href="{% url 'complaint' %}">Complaint</a></li>
+        {% endif %}
     </ul>
     <br><br>
     {% block content %}

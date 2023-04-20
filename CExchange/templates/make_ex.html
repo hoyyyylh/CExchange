@@ -2,7 +2,20 @@
 
 {% block content %}
 <H1>Make Your Exchange Request</H1>
-<form action="make_exchange/" method="post">
+<h1 style="color: red;">Warning! Transaction on LTC, DASH, DOGE is on MAINNET!</h1>
+<pre>
+    Amount Unit:
+    BTC : Satoshi
+    LTC : Litoshis
+    DASH : Duff
+    DOGE : Dogetoshi
+</pre>
+<p>Caution:</p>
+<p>Once submit the request, it cannot be undone</p>
+<p>Virtual Assets is Highly Risky</p>
+<p>Think Twice before press any button</p>
+<form id="exForm" action="make_exchange/" method="post" style="border: 2px solid seagreen; padding: 5px;">
+    <label for="exForm">Make Your Exchange Request Here</label><br><br>
     {% csrf_token %}
     <label for="cur">Currency:</label>
     <select id="cur" name="cur">

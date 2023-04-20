@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+{% block content %}
+<H1>Complaint</H1>
+<table>
+    <tr>
+        <td>Date</td>
+        <td>Message</td>
+    </tr>
+    {% for x in complaint reversed %}
+    <tr>
+        <td>{{ x.date }}</td>
+        <td>{{ x.messages }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

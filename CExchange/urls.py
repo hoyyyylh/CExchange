@@ -15,4 +15,9 @@ urlpatterns = [
     path('ex_list/confirm/<int:id>', views.confirm, name='confirm'),
     path('ex_list/confirm/deal/<int:id>', views.deal, name='deal'),
     path('fatality/', views.fatality, name='fatality'),
+    path('success/', views.success, name='success'),
+    path('complaint/', views.complaint, name='complaint'),
+    path('complaint/addcomplaint/', views.addcomplaint, name='addcomplaint'),
+    path('complaintlist/', views.complaintlist, name='complaintlist'),
+    path('information/', views.information, name="information"),
 ]

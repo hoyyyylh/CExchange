@@ -1,9 +1,12 @@
 {% extends "master.html" %}
 
 {% block content %}
-<H1>My Exchange</H1>
+<H1>My History</H1>
+<br>
+<h1>My Exchange</h1>
 <table>
     <tr>
+        <td>Date</td>
         <td>Currency</td>
         <td>Side</td>
         <td>Amount</td>
@@ -12,11 +15,26 @@
     </tr>
     {% for x in myexchange reversed %}
     <tr>
+        <td>{{ x.init_date }}</td>
         <td>{{ x.currency }}</td>
         <td>{{ x.side }}</td>
         <td>{{ x.amount }}</td>
         <td>{{ x.price }}</td>
         <td>{{ x.done }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<h1>My Deposit</h1>
+<table>
+    <tr>
+        <td>Date</td>
+        <td>Amount</td>
+    </tr>
+    {% for x in mydeposit reversed %}
+    <tr>
+        <td>{{ x.date }}</td>
+        <td>{{ x.amount }}</td>
     </tr>
     {% endfor %}
 </table>
