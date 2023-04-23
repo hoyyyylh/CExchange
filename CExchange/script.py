@@ -4,6 +4,7 @@ import braintree
 import ccxt
 from CryptoEx import settings
 from .models import Wallet, Exchange
+import datetime
 
 def CreateAC(user):
     name = user.username
@@ -16,7 +17,7 @@ def CreateAC(user):
     addr = c2.pubtoaddr(pub)
     new_wallet2 = Wallet(owner=user, currency="BTC", sec_key=priv, pub_key=pub, addr=addr)
     new_wallet2.save()
-    c3 = Litecoin()
+    c3 = Litecoin(testnet=True)
     priv = sha256(input_str)
     pub = c3.privtopub(priv)
     addr = c3.pubtoaddr(pub)
@@ -38,13 +39,18 @@ def CreateAC(user):
 def GetBal(addr, CUR):
     if CUR == "BTC":
         coin_symbol = 'btc-testnet'
+        bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
     elif CUR == "LTC":
-        coin_symbol = 'ltc'
+        bal = 0
+        c = Litecoin(testnet=True)
+        for x in c.unspent(addr):
+            bal += int(x['value'])
     elif CUR == "DASH":
         coin_symbol = 'dash'
+        bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
     elif CUR == "DOGE":
         coin_symbol = 'doge'
-    bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
+        bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
     return bal
 
 def RefreshWallet(wallet):
@@ -73,7 +79,11 @@ def deal_confirm(id, user):
         
         ownerwallet = Wallet.objects.filter(owner=ex.owner).get(currency=ex.currency)
         amount = int(ex.amount)
-        blockcypher.simple_spend(from_privkey=targetwallet.sec_key,to_address=ownerwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
+        if ex.currency == "LTC":
+            c = Litecoin(testnet=True)
+            c.send(privkey=targetwallet.sec_key, frm=targetwallet.addr, to=ownerwallet.addr,  value=amount)
+        else:
+            blockcypher.simple_spend(from_privkey=targetwallet.sec_key,to_address=ownerwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
         RefreshWallet(targetwallet)
         RefreshWallet(ownerwallet)
 
@@ -84,6 +94,8 @@ def deal_confirm(id, user):
         targetcash.balance += ex.price
         targetcash.save()
         ex.done = True
+        ex.taken_by = user.username
+        ex.deal_date = datetime.datetime.now()
         ex.save()
     else:
         targetcash = Wallet.objects.filter(owner=user).get(currency="HKD")
@@ -95,7 +107,11 @@ def deal_confirm(id, user):
         targetwallet = Wallet.objects.filter(owner=user).get(currency=ex.currency)
         ownerwallet = Wallet.objects.filter(owner=ex.owner).get(currency=ex.currency)
         amount = int(ex.amount)
-        blockcypher.simple_spend(from_privkey=ownerwallet.sec_key,to_address=targetwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
+        if ex.currency == "LTC":
+            c = Litecoin(testnet=True)
+            c.send(privkey=ownerwallet.sec_key, frm=ownerwallet.addr, to=targetwallet.addr,  value=amount)
+        else:
+            blockcypher.simple_spend(from_privkey=ownerwallet.sec_key,to_address=targetwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
         RefreshWallet(targetwallet)
         RefreshWallet(ownerwallet)
 
@@ -105,6 +121,8 @@ def deal_confirm(id, user):
         targetcash.balance -= ex.price
         targetcash.save()
         ex.done = True
+        ex.taken_by = user.username
+        ex.deal_date = datetime.datetime.now()
         ex.save()
     return result
 

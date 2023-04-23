@@ -40,7 +40,7 @@ def profile(request):
     mybal = []
     for wallet in mywallet:
         if wallet.currency != "HKD":
-            #RefreshWallet(wallet)
+            RefreshWallet(wallet)
             word = str(wallet.currency) + ": " + str(wallet.balance)
             mybal.append(word)
         else:
