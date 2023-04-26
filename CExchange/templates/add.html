@@ -6,13 +6,13 @@
 <form action="addrecord/" method="post">
     {% csrf_token %}
     <p>Username:</p>
-    <input name="username">
+    <input name="username" required>
     <br>
     <p>Password:</p>
-    <input type="password" name="password">
+    <input type="password" name="password" required>
     <br>
     <p>Email:</p>
-    <input type="email" name="email">
+    <input type="email" name="email" required>
     <br><br>
     <input type="submit" value="Submit">
 </form>

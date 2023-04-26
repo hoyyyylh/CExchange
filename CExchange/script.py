@@ -29,11 +29,11 @@ def CreateAC(user):
     addr = c4.pubtoaddr(pub)
     new_wallet4 = Wallet(owner=user, currency="DASH", sec_key=priv, pub_key=pub, addr=addr)
     new_wallet4.save()
-    c5 = Doge()
+    c5 = BitcoinCash(testnet=True)
     priv = sha256(input_str)
     pub = c5.privtopub(priv)
     addr = c5.pubtoaddr(pub)
-    new_wallet5 = Wallet(owner=user, currency="DOGE", sec_key=priv, pub_key=pub, addr=addr)
+    new_wallet5 = Wallet(owner=user, currency="BCH", sec_key=priv, pub_key=pub, addr=addr)
     new_wallet5.save()
 
 def GetBal(addr, CUR):
@@ -48,9 +48,11 @@ def GetBal(addr, CUR):
     elif CUR == "DASH":
         coin_symbol = 'dash'
         bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
-    elif CUR == "DOGE":
-        coin_symbol = 'doge'
-        bal = blockcypher.get_total_balance(addr, coin_symbol=coin_symbol)
+    elif CUR == "BCH":
+        bal = 0
+        c = BitcoinCash(testnet=True)
+        for x in c.unspent(addr):
+            bal += int(x['value'])
     return bal
 
 def RefreshWallet(wallet):
@@ -62,12 +64,8 @@ def deal_confirm(id, user):
     ex = Exchange.objects.get(id=id)
     if ex.currency == "BTC":
         coin_symbol = 'btc-testnet'
-    elif ex.currency == "LTC":
-        coin_symbol = 'ltc'
     elif ex.currency == "DASH":
         coin_symbol = 'dash'
-    elif ex.currency == "DOGE":
-        coin_symbol = 'doge'
     result = True
     if ex.side == "BUY":
         targetwallet = Wallet.objects.filter(owner=user).get(currency=ex.currency)
@@ -81,9 +79,12 @@ def deal_confirm(id, user):
         amount = int(ex.amount)
         if ex.currency == "LTC":
             c = Litecoin(testnet=True)
-            c.send(privkey=targetwallet.sec_key, frm=targetwallet.addr, to=ownerwallet.addr,  value=amount)
+            txid = c.send(privkey=targetwallet.sec_key, frm=targetwallet.addr, to=ownerwallet.addr,  value=amount)
+        elif ex.currency == "BCH":
+            c = BitcoinCash(testnet=True)
+            txid = c.send(privkey=targetwallet.sec_key, frm=targetwallet.addr, to=ownerwallet.addr,  value=amount)
         else:
-            blockcypher.simple_spend(from_privkey=targetwallet.sec_key,to_address=ownerwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
+            txid = blockcypher.simple_spend(from_privkey=targetwallet.sec_key,to_address=ownerwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
         RefreshWallet(targetwallet)
         RefreshWallet(ownerwallet)
 
@@ -94,8 +95,9 @@ def deal_confirm(id, user):
         targetcash.balance += ex.price
         targetcash.save()
         ex.done = True
-        ex.taken_by = user.username
+        ex.taken_by = user.id
         ex.deal_date = datetime.datetime.now()
+        ex.Txid = txid
         ex.save()
     else:
         targetcash = Wallet.objects.filter(owner=user).get(currency="HKD")
@@ -109,9 +111,12 @@ def deal_confirm(id, user):
         amount = int(ex.amount)
         if ex.currency == "LTC":
             c = Litecoin(testnet=True)
-            c.send(privkey=ownerwallet.sec_key, frm=ownerwallet.addr, to=targetwallet.addr,  value=amount)
+            txid = c.send(privkey=ownerwallet.sec_key, frm=ownerwallet.addr, to=targetwallet.addr,  value=amount)
+        elif ex.currency == "BCH":
+            c = BitcoinCash(testnet=True)
+            txid = c.send(privkey=ownerwallet.sec_key, frm=ownerwallet.addr, to=targetwallet.addr,  value=amount)
         else:
-            blockcypher.simple_spend(from_privkey=ownerwallet.sec_key,to_address=targetwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
+            txid = blockcypher.simple_spend(from_privkey=ownerwallet.sec_key,to_address=targetwallet.addr,to_satoshis=amount,coin_symbol=coin_symbol,api_key=settings.BLOCKCYPHER_TOKEN,privkey_is_compressed=False)
         RefreshWallet(targetwallet)
         RefreshWallet(ownerwallet)
 
@@ -121,8 +126,9 @@ def deal_confirm(id, user):
         targetcash.balance -= ex.price
         targetcash.save()
         ex.done = True
-        ex.taken_by = user.username
+        ex.taken_by = user.id
         ex.deal_date = datetime.datetime.now()
+        ex.Txid = txid
         ex.save()
     return result
 
@@ -184,12 +190,12 @@ def getprice():
     tv = exchange.fetch_ticker('DASH/USDT')['baseVolume']
     final = word2 + str(tv)
     price.append(final)
-    word = "DOGE:HKD "
-    ex = exchange.fetch_ticker('DOGE/USD')['average']
+    word = "BCH/HKD "
+    ex = exchange.fetch_ticker('BCH/USD')['average']
     hkdp = float(ex)*7.85
     final = word + str(hkdp)
     price.append(final)
-    tv = exchange.fetch_ticker('DOGE/USD')['baseVolume']
+    tv = exchange.fetch_ticker('BCH/USD')['baseVolume']
     final = word2 + str(tv)
     price.append(final)
     return price

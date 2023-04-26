@@ -2,13 +2,13 @@
 
 {% block content %}
 <H1>Make Your Exchange Request</H1>
-<h1 style="color: red;">Warning! Transaction on LTC, DASH, DOGE is on MAINNET!</h1>
+<h1 style="color: red;">Warning! Transaction on DASH is on MAINNET!</h1>
 <pre>
     Amount Unit:
     BTC : Satoshi
     LTC : Litoshis
     DASH : Duff
-    DOGE : Dogetoshi
+    BCH : Satoshi
 </pre>
 <p>Caution:</p>
 <p>Once submit the request, it cannot be undone</p>
@@ -18,21 +18,21 @@
     <label for="exForm">Make Your Exchange Request Here</label><br><br>
     {% csrf_token %}
     <label for="cur">Currency:</label>
-    <select id="cur" name="cur">
+    <select id="cur" name="cur" required>
         <option value="BTC">BTC</option>
         <option value="LTC">LTC</option>
         <option value="DASH">DASH</option>
-        <option value="DOGE">DOGE</option>
+        <option value="BCH">BCH</option>
     </select><br><br>
     <label for="side">Buy or Sell:</label>
-    <select id="side" name="side">
+    <select id="side" name="side" required>
         <option value="BUY">Buy</option>
         <option value="SELL">Sell</option>
     </select><br><br>
     <label for="amount">How Many Coin?</label>
-    <input name="amount" id="amount" placeholder="Amount"/><br><br>
+    <input name="amount" id="amount" placeholder="Amount" required /><br><br>
     <label for="price">For How Much?</label>
-    <input name="price" id="price" placeholder="Price"/><br><br>
+    <input name="price" id="price" placeholder="Price" required /><br><br>
     <input type="submit" id="submit" value="Submit" style="background-color: aqua;"/>
 </form>
 {% endblock %}

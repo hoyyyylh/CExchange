@@ -12,6 +12,7 @@
         <td>Amount</td>
         <td>Price</td>
         <td>Finish</td>
+        <td>TxID</td>
     </tr>
     {% for x in myexchange reversed %}
     <tr>
@@ -21,6 +22,7 @@
         <td>{{ x.amount }}</td>
         <td>{{ x.price }}</td>
         <td>{{ x.done }}</td>
+        <td>{{ x.Txid }}</td>
     </tr>
     {% endfor %}
 </table>
@@ -35,6 +37,28 @@
     <tr>
         <td>{{ x.date }}</td>
         <td>{{ x.amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<h1>My Deal</h1>
+<table>
+    <tr>
+        <td>Date</td>
+        <td>Currency</td>
+        <td>Side</td>
+        <td>Amount</td>
+        <td>Price</td>
+        <td>TxID</td>
+    </tr>
+    {% for x in mydeal reversed %}
+    <tr>
+        <td>{{ x.init_date }}</td>
+        <td>{{ x.currency }}</td>
+        <td>{{ x.side }}</td>
+        <td>{{ x.amount }}</td>
+        <td>{{ x.price }}</td>
+        <td>{{ x.Txid }}</td>
     </tr>
     {% endfor %}
 </table>

@@ -15,10 +15,10 @@ function changecontent() {
         document.getElementById("web").href = "https://www.dash.org/";
         document.getElementById("web").innerHTML = "Dash Official Website";
     }
-    else if (x == "Dogecoin") {
-        document.getElementById("content").innerHTML = document.getElementById("DogecoinText").innerHTML;
-        document.getElementById("web").href = "https://dogecoin.com/";
-        document.getElementById("web").innerHTML = "Dogecoin Official Website";
+    else if (x == "BitcoinCash") {
+        document.getElementById("content").innerHTML = document.getElementById("BitcoinCashText").innerHTML;
+        document.getElementById("web").href = "https://bitcoincash.org/";
+        document.getElementById("web").innerHTML = "BitcoinCash Official Website";
     }
     else if (x == "platform") {
         document.getElementById("content").innerHTML = document.getElementById("platformText").innerHTML;

@@ -7,7 +7,7 @@
 
 <form id="payment-form" action="payment/" method="post">
     {% csrf_token %}
-    <input name="amount" id="amount" placeholder="Amount"/><br>
+    <input name="amount" id="amount" placeholder="Amount" required /><br>
     <div id="braintree-dropin"></div>
     <input type="submit" id="submit" value="Submit" style="background-color: aqua;"/>
     <input type="hidden" id="nonce" name="payment_method_nonce"/>

@@ -101,9 +101,11 @@ def my_ex(request):
     template = loader.get_template('my_ex.html')
     myexchange = Exchange.objects.filter(owner=request.user).values()
     mydeposit = Deposit.objects.filter(owner=request.user).values()
+    mydeal = Exchange.objects.filter(taken_by=request.user.id).values()
     context = {
         'myexchange': myexchange,
-        'mydeposit': mydeposit
+        'mydeposit': mydeposit,
+        'mydeal': mydeal
     }
     return HttpResponse(template.render(context,request))
 
