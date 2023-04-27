@@ -5,6 +5,7 @@ import ccxt
 from CryptoEx import settings
 from .models import Wallet, Exchange
 import datetime
+from django.core.mail import send_mail
 
 def CreateAC(user):
     name = user.username
@@ -99,6 +100,8 @@ def deal_confirm(id, user):
         ex.deal_date = datetime.datetime.now()
         ex.Txid = txid
         ex.save()
+        send_mail("Transaction Done","Please view detail in the platform","CExchange@gmail.com",[ex.owner.email])
+        send_mail("Transaction Done","Please view detail in the platform","CExchange@gmail.com",[user.email])
     else:
         targetcash = Wallet.objects.filter(owner=user).get(currency="HKD")
 
@@ -130,6 +133,8 @@ def deal_confirm(id, user):
         ex.deal_date = datetime.datetime.now()
         ex.Txid = txid
         ex.save()
+        send_mail("Transaction Done","Please view detail in the platform","CExchange@gmail.com",[ex.owner.email])
+        send_mail("Transaction Done","Please view detail in the platform","CExchange@gmail.com",[user.email])
     return result
 
 gateway = braintree.BraintreeGateway(

@@ -20,4 +20,6 @@ urlpatterns = [
     path('complaint/addcomplaint/', views.addcomplaint, name='addcomplaint'),
     path('complaintlist/', views.complaintlist, name='complaintlist'),
     path('information/', views.information, name="information"),
+    path('twoFA/', views.twoFA, name="twoFA"),
+    path('twoFA/twoFALogin/', views.twoFALogin, name="twoFALogin"),
 ]

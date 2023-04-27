@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <h1> 2 FA </h1>
+
+    <form action="twoFALogin/" method="post">
+        {% csrf_token %}
+        <input name="passcode" id="passcode" placeholder="6 digit number" required /><br><br>
+        <input type="submit" id="submit" value="Submit" style="background-color: aqua;"/>
+        <input type="hidden" id="code" name="code"/>
+    </form>
+
+    <script type="text/javascript">
+        var code = "{{ code }}";
+        document.getElementById('code').value = code;
+    </script>
+</html>

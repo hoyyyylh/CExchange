@@ -6,6 +6,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from .script import CreateAC, RefreshWallet, deal_confirm, getprice, gentoken, gentrans
 from .models import Wallet, Exchange, Deposit, Complaint
+from django.core.mail import send_mail
+from django.contrib.auth import logout
+import random
 
 # Create your views here.
 def index(request):
@@ -24,7 +27,11 @@ def addrecord(request):
     x = request.POST['username']
     y = request.POST['password']
     z = request.POST['email']
+    fn = request.POST['firstname']
+    ln = request.POST['lastname']
     user = User.objects.create_user(x,z,y)
+    user.first_name = fn
+    user.last_name = ln
     user.save()
     CreateAC(user)
     return HttpResponseRedirect(reverse('index'))
@@ -187,3 +194,23 @@ def complaintlist(request):
         return HttpResponse(template.render(context,request))
     else:
         return HttpResponseRedirect(reverse('index'))
+    
+@login_required
+def twoFA(request):
+    template = loader.get_template('twoFA.html')
+    code = str(random.randint(100000,999999))
+    context = {
+        'code':code
+    }
+    email = str(request.user.email)
+    send_mail("Code For Login",code,"CExchange@gmail.com",[email])
+    return HttpResponse(template.render(context,request))
+
+def twoFALogin(request):
+    passcode = request.POST['passcode']
+    code = request.POST['code']
+    if passcode == code:
+        return HttpResponseRedirect(reverse('index'))
+    else:
+        logout(request)
+        return HttpResponseRedirect(reverse('fatality'))

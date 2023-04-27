@@ -1,6 +1,14 @@
 {% extends "master.html" %}
 
 {% block content %}
+<style>
+    .invalid {
+        color: red;
+    }
+    .valid {
+        color: green;
+    }
+</style>
 <h1>Sign Up</h1>
 
 <form action="addrecord/" method="post">
@@ -9,11 +17,78 @@
     <input name="username" required>
     <br>
     <p>Password:</p>
-    <input type="password" name="password" required>
+    <input id="psw" type="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+    <br>
+    <p>First Name:</p>
+    <input name="firstname" required>
+    <br>
+    <p>Last Name:</p>
+    <input name="lastname" required>
     <br>
     <p>Email:</p>
     <input type="email" name="email" required>
     <br><br>
     <input type="submit" value="Submit">
 </form>
+
+<div id="message" style="display: none;">
+    <h1>Password must contain the following:</h1>
+    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+    <p id="number" class="invalid">A <b>number</b></p>
+    <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+</div>
+
+<script>
+    var myInput = document.getElementById("psw");
+    var letter = document.getElementById("letter");
+    var capital = document.getElementById("capital");
+    var number = document.getElementById("number");
+    var length = document.getElementById("length");
+    
+    myInput.onfocus = function() {
+      document.getElementById("message").style.display = "block";
+    }
+    
+    myInput.onblur = function() {
+      document.getElementById("message").style.display = "none";
+    }
+    
+    myInput.onkeyup = function() {
+      var lowerCaseLetters = /[a-z]/g;
+      if(myInput.value.match(lowerCaseLetters)) {
+        letter.classList.remove("invalid");
+        letter.classList.add("valid");
+      } else {
+        letter.classList.remove("valid");
+        letter.classList.add("invalid");
+    }
+    
+      var upperCaseLetters = /[A-Z]/g;
+      if(myInput.value.match(upperCaseLetters)) {
+        capital.classList.remove("invalid");
+        capital.classList.add("valid");
+      } else {
+        capital.classList.remove("valid");
+        capital.classList.add("invalid");
+      }
+    
+      var numbers = /[0-9]/g;
+      if(myInput.value.match(numbers)) {
+        number.classList.remove("invalid");
+        number.classList.add("valid");
+      } else {
+        number.classList.remove("valid");
+        number.classList.add("invalid");
+      }
+    
+      if(myInput.value.length >= 8) {
+        length.classList.remove("invalid");
+        length.classList.add("valid");
+      } else {
+        length.classList.remove("valid");
+        length.classList.add("invalid");
+      }
+    }
+</script>
 {% endblock %}
