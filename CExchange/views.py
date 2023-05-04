@@ -4,7 +4,7 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
-from .script import CreateAC, RefreshWallet, deal_confirm, getprice, gentoken, gentrans
+from .script import CreateAC, RefreshWallet, deal_confirm, getprice, gentoken, gentrans, recomPri
 from .models import Wallet, Exchange, Deposit, Complaint
 from django.core.mail import send_mail
 from django.contrib.auth import logout
@@ -90,7 +90,14 @@ def payment(request):
 @login_required
 def make_ex(request):
     template = loader.get_template('make_ex.html')
-    return HttpResponse(template.render({}, request))
+    BTC,LTC,DASH,BCH = recomPri()
+    context = {
+        'BTC':BTC,
+        'LTC':LTC,
+        'DASH':DASH,
+        'BCH':BCH
+    }
+    return HttpResponse(template.render(context, request))
 
 @login_required
 def make_exchange(request):

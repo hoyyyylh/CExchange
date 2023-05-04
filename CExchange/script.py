@@ -204,3 +204,10 @@ def getprice():
     final = word2 + str(tv)
     price.append(final)
     return price
+
+def recomPri():
+    BTC = float(exchange.fetch_ticker('BTC/USD')['average'])*7.85
+    LTC = float(exchange.fetch_ticker('LTC/USD')['average'])*7.85
+    DASH = float(exchange.fetch_ticker('DASH/USDT')['average'])*7.85
+    BCH = float(exchange.fetch_ticker('BCH/USD')['average'])*7.85
+    return BTC,LTC,DASH,BCH
